@@ -1,2 +1,35 @@
 # Virtual Environment
 /venv
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Environment
+.env
+.env.local
+
+# Config secrets
+config/secrets.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs
+*.log
+app.log
