@@ -33,3 +33,7 @@ Thumbs.db
 # Logs
 *.log
 app.log
+
+# Added for consistency
+.env.*.local
+venv/
