@@ -17,7 +17,6 @@ A modern, FastAPI-based web application for managing student data with authentic
 - **Database**: MongoDB (with PyMongo)
 - **Validation**: Pydantic
 - **Server**: Uvicorn (ASGI)
-- **Testing**: Pytest
 - **Configuration**: YAML support
 
 ## 📁 Project Structure
@@ -70,13 +69,14 @@ BMS/
    ```
 
 4. **Configure database**
-   - Update `config/secrets_parser.py` with your MongoDB connection string
+   - Copy `config/secrets.yml.example` to `config/secrets.yml`
+   - Fill in your MongoDB `host`, `port`, `database`, and `connection_string`
    - Ensure MongoDB is running and accessible
 
 5. **Run the application**
 
    ```bash
-   python main.py
+   uvicorn main:app --reload
    ```
 
 The API will be available at `http://localhost:8000`
@@ -106,6 +106,10 @@ Once the application is running, visit:
 | POST | `/students/sign-up` | Register new student |
 | POST | `/students/sign-in` | Authenticate student |
 | PUT | `/students/{student_id}` | Update student profile |
+| PUT | `/students/{student_id}/password` | Update student password |
+| PUT | `/students/{student_id}/socials` | Update social profiles |
+| PUT | `/students/{student_id}/coding` | Update coding profiles |
+| DELETE | `/students/{student_id}` | Delete student |
 
 ### Student Model
 
@@ -136,26 +140,11 @@ Students have the following profile structure:
 }
 ```
 
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-pytest
-```
-
-For coverage report:
-
-```bash
-coverage run -m pytest
-coverage report
-```
-
 ## 🔧 Configuration
 
 Update the following files for your environment:
 
-- `config/secrets_parser.py` - Database connection settings
+- `config/secrets.yml` - Database connection settings (copy from `config/secrets.yml.example`)
 - `requirements.txt` - Add any additional dependencies
 
 ## 🤝 Contributing
