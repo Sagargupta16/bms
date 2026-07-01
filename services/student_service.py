@@ -12,10 +12,10 @@ class StudentService:
         self.student_collection = get_student_collection()
 
     def get_all_students(self):
-        return dumps(list(self.student_collection.find({})))
+        return dumps(list(self.student_collection.find({}, {"password": 0})))
 
     def get_student_by_id(self, student_id: str):
-        return self.student_collection.find_one({"_id": ObjectId(student_id)})
+        return self.student_collection.find_one({"_id": ObjectId(student_id)}, {"password": 0})
 
     def get_student_by_email(self, email: str):
         return self.student_collection.find_one({"email": email})
@@ -26,22 +26,24 @@ class StudentService:
         return {"message": "Student registered successfully", "student_id": str(inserted_id)}
 
     def sign_in_student(self, student: StudentModelSignIn):
-        return self.student_collection.find_one({"email": student.email, "password": student.password})
+        return self.student_collection.find_one({"email": student.email, "password": student.password}, {"password": 0})
 
     def update_student(self, student_id: str, student: StudentModelUpdate):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.json()})
-        return self.student_collection.find_one({"_id": ObjectId(student_id)})
+        changes = student.model_dump(exclude_unset=True)
+        if changes:
+            self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": changes})
+        return self.student_collection.find_one({"_id": ObjectId(student_id)}, {"password": 0})
 
     def update_student_password(self, student_id: str, student: StudentModelUpdatePassword):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.json()})
+        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
         return {"message": "Password updated successfully"}
 
     def update_student_socials(self, student_id: str, student: StudentModelUpdateSocials):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.json()})
+        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
         return {"message": "Socials updated successfully"}
 
     def update_student_coding(self, student_id: str, student: StudentModelUpdateCoding):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.json()})
+        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
         return {"message": "Coding details updated successfully"}
 
     def delete_student(self, student_id: str):
