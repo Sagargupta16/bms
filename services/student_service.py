@@ -29,7 +29,9 @@ class StudentService:
         return self.student_collection.find_one({"email": student.email, "password": student.password})
 
     def update_student(self, student_id: str, student: StudentModelUpdate):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
+        changes = student.model_dump(exclude_unset=True)
+        if changes:
+            self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": changes})
         return self.student_collection.find_one({"_id": ObjectId(student_id)})
 
     def update_student_password(self, student_id: str, student: StudentModelUpdatePassword):
