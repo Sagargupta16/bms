@@ -1,10 +1,19 @@
 from fastapi import Depends
 from pymongo import MongoClient
 from bson import ObjectId
+from bson.errors import InvalidId
 
 from config.secrets_parser import get_db, get_student_collection
 from models.student_model import StudentModel, StudentModelUpdate, StudentModelUpdatePassword, StudentModelUpdateSocials, StudentModelUpdateCoding, StudentModelSignIn, StudentModelSignUp
 from bson.json_util import dumps
+
+
+def parse_student_object_id(student_id: str):
+    try:
+        return ObjectId(student_id)
+    except InvalidId:
+        return None
+
 
 class StudentService:
     def __init__(self, db: MongoClient = Depends(get_db)):
@@ -15,7 +24,10 @@ class StudentService:
         return dumps(list(self.student_collection.find({}, {"password": 0})))
 
     def get_student_by_id(self, student_id: str):
-        return self.student_collection.find_one({"_id": ObjectId(student_id)}, {"password": 0})
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
+        return self.student_collection.find_one({"_id": object_id}, {"password": 0})
 
     def get_student_by_email(self, email: str):
         return self.student_collection.find_one({"email": email})
@@ -29,25 +41,48 @@ class StudentService:
         return self.student_collection.find_one({"email": student.email, "password": student.password}, {"password": 0})
 
     def update_student(self, student_id: str, student: StudentModelUpdate):
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
         changes = student.model_dump(exclude_unset=True)
         if changes:
-            self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": changes})
-        return self.student_collection.find_one({"_id": ObjectId(student_id)}, {"password": 0})
+            self.student_collection.update_one({"_id": object_id}, {"$set": changes})
+        return self.student_collection.find_one({"_id": object_id}, {"password": 0})
 
     def update_student_password(self, student_id: str, student: StudentModelUpdatePassword):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
+        result = self.student_collection.update_one({"_id": object_id}, {"$set": student.model_dump()})
+        if result.matched_count == 0:
+            return None
         return {"message": "Password updated successfully"}
 
     def update_student_socials(self, student_id: str, student: StudentModelUpdateSocials):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
+        result = self.student_collection.update_one({"_id": object_id}, {"$set": student.model_dump()})
+        if result.matched_count == 0:
+            return None
         return {"message": "Socials updated successfully"}
 
     def update_student_coding(self, student_id: str, student: StudentModelUpdateCoding):
-        self.student_collection.update_one({"_id": ObjectId(student_id)}, {"$set": student.model_dump()})
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
+        result = self.student_collection.update_one({"_id": object_id}, {"$set": student.model_dump()})
+        if result.matched_count == 0:
+            return None
         return {"message": "Coding details updated successfully"}
 
     def delete_student(self, student_id: str):
-        self.student_collection.delete_one({"_id": ObjectId(student_id)})
+        object_id = parse_student_object_id(student_id)
+        if object_id is None:
+            return None
+        result = self.student_collection.delete_one({"_id": object_id})
+        if result.deleted_count == 0:
+            return None
         return {"message": "Student deleted successfully"}
 
     def delete_all_students(self):
