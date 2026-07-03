@@ -4,7 +4,7 @@ from bson import ObjectId
 from bson.errors import InvalidId
 
 from config.secrets_parser import get_db, get_student_collection
-from models.student_model import StudentModel, StudentModelUpdate, StudentModelUpdatePassword, StudentModelUpdateSocials, StudentModelUpdateCoding, StudentModelSignIn, StudentModelSignUp
+from models.student_model import StudentModelUpdate, StudentModelUpdatePassword, StudentModelUpdateSocials, StudentModelUpdateCoding, StudentModelSignIn, StudentModelSignUp
 from bson.json_util import dumps
 
 

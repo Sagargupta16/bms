@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, HTTPException
 
 from services.student_service import StudentService
-from models.student_model import StudentModel, StudentModelUpdate, StudentModelUpdatePassword, StudentModelUpdateSocials, StudentModelUpdateCoding , StudentModelSignIn , StudentModelSignUp
+from models.student_model import StudentModelUpdate, StudentModelUpdatePassword, StudentModelUpdateSocials, StudentModelUpdateCoding , StudentModelSignIn , StudentModelSignUp
 
 router = APIRouter( prefix="/students", tags=["students"], responses={404: {"description": "Not found"}})
 
