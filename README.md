@@ -1,5 +1,7 @@
 # BMS (Student Management System)
 
+BMS stands for Batch Management System -- it manages the student records of a college batch.
+
 A modern, FastAPI-based web application for managing student data with authentication, profile management, and social/coding platform integration. Built with MongoDB for robust data storage and RESTful API design.
 
 ## 🚀 Features
