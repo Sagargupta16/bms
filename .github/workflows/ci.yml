@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,8 +18,10 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+      # Hash-locked, wheels only: a source distribution runs its build script at install time.
+      # Regenerate the lock with the command in its header after editing requirements*.txt.
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: "pip install --require-hashes --only-binary :all: -r requirements-dev.lock.txt"
       - name: Lint
         run: ruff check .
       - name: Test

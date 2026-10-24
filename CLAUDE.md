@@ -54,6 +54,7 @@ No test suite. `pytest` and `coverage` are in `requirements.txt` but no tests ex
 - `services/auth_service.py` is empty (0 bytes); auth logic actually lives in `student_service.py`.
 - `.nvmrc` (Node 19) and the `node_modules` line in `.dockerignore` are template leftovers -- there is no Node code and no Dockerfile.
 - `config/secrets.yml` is gitignored; never commit it.
+- CI installs `requirements-dev.lock.txt` (hash-locked, generated) with `--require-hashes --only-binary :all:`, not `requirements-dev.txt`. Renovate does not touch the lock: after editing `requirements*.txt`, regenerate it with the `uv pip compile` command in its header or CI keeps testing the old pins.
 
 ## API routes
 
