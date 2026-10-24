@@ -147,7 +147,7 @@ Students have the following profile structure:
 Update the following files for your environment:
 
 - `config/secrets.yml` - Database connection settings (copy from `config/secrets.yml.example`)
-- `requirements.txt` - Add any additional dependencies
+- `requirements.txt` - Add any additional dependencies, then regenerate `requirements-dev.lock.txt` (CI installs from it) with the `uv pip compile` command in its header
 
 ## 🤝 Contributing
 
