@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.1] - 2026-10-24
+
+- Limit the CI workflow token to `contents: read` (CodeQL `actions/missing-workflow-permissions`)
+
 ## [1.1.0] - 2026-03-14
 
 - Expand .gitignore and add secrets.yml.example
