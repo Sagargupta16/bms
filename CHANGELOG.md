@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.2] - 2026-10-25
+
+- pymongo 4.17.0 -> 4.18.2 in `requirements.txt` and the hash-locked `requirements-dev.lock.txt`, for the BSON encoding heap write (PYTHON-5996), connection-string host injection (PYTHON-5986), the `.sock` KMS endpoint (PYTHON-5990) and the GridFS delete match (PYTHON-5994) advisories
+
 ## [1.1.1] - 2026-10-24
 
 - Limit the CI workflow token to `contents: read` (CodeQL `actions/missing-workflow-permissions`)
