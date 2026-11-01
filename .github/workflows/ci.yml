@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
       # Hash-locked, wheels only: a source distribution runs its build script at install time.
       # Regenerate the lock with the command in its header after editing requirements*.txt.
